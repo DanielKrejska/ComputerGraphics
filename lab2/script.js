@@ -23,5 +23,5 @@ function showTimeAlert()
 
 function showTimePage()
 {
-    document.getElementById('pageTimeText').innerHTML = getDate() + "\n" + getTime();
+    document.getElementById('pageTimeText').innerHTML = getDate() + "<br>" + getTime();
 }
