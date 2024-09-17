@@ -21,10 +21,10 @@ out vec4 vColor;
 void
 main()
 {
-  gl_PointSize = 4.0;
+  gl_PointSize = 20.0;
   gl_Position = aPosition;
-  vColor = vec4(1.0,0.0,0.0,1.0);
-  //vColor = vec4((1.0+aPosition.xyz)/2.0,1.0);
+  //vColor = vec4(1.0,0.0,0.0,1.0);
+  vColor = vec4((1.0+aPosition.xyz)/2.0,1.0);
 }
 </script>
 
@@ -42,7 +42,7 @@ main()
 </script>
 <script type="text/javascript" src="../Common/initShaders.js"></script>
 <script type="text/javascript" src="../Common/MVnew.js"></script>
-<script type="text/javascript" src="Lab05ColorArray.js"></script>
+<script type="text/javascript" src="script.js"></script>
 
 </BODY>
 </HTML>
