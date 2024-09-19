@@ -1,7 +1,8 @@
 "use strict";
+
 var gl;
-var points = [];
-var sliderVal = 0;
+var points;
+
 init();
 
 function init()
@@ -33,18 +34,18 @@ function init()
 
     // add event listener to the slider
     document.getElementById('slider').addEventListener("input", function () {
-        sliderVal = this.value;
-        points = [];
-        setPointsAndRender();
+        setPointsAndRender(this.value);
     });
 
-    setPointsAndRender();
+    setPointsAndRender(0);
 }
 
-function setPointsAndRender()
+function setPointsAndRender(sliderVal)
 {
-    recursiveSubdivision(vec2(-0.95, 0), vec2(0.95, 0), sliderVal);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+    points = [];
+    var start = vec2(-0.95, 0);
+    var end = vec2(0.95, 0)
+    recursiveSubdivision(start, end, sliderVal);
     render();
 }
 
@@ -73,6 +74,7 @@ function recursiveSubdivision(a, b, depth)
 
 function render()
 {
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.LINE_STRIP, 0, points.length);
 }
