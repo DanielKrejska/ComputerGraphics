@@ -25,7 +25,6 @@ function init()
     // Load the data into the GPU
     var bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    
 
     // Get location of shader variables
     var positionLoc = gl.getAttribLocation(program, "aPosition");
@@ -51,7 +50,7 @@ function setPointsAndRender(sliderVal)
 
 function recursiveSubdivision(a, b, depth)
 {
-    if (depth === 0)
+    if (depth == 0)
     {
         points.push(a, b);
         return;
