@@ -7,6 +7,7 @@ var maxNumPositions  = 200;
 
 var t;
 var points=[vec2(  0.00 ,  0.00 )];
+var savePoints = true;
 
 init();
 
@@ -17,13 +18,25 @@ function init() {
     if (!gl) alert("WebGL 2.0 isn't available");
 
     // 2 - listener event for the button which toggles whether to save the points clicked
-    
+    document.getElementById("Button1").addEventListener("click", function() {
+        savePoints = !savePoints;
+    });
 
     // 1 - listener event for the mouse click
     // 3 - will later need to be updated in conjunction with whether the points are saved
     canvas.addEventListener("mousedown", function(event){
-       t  = 
-       points.push(t);
+        var rect = canvas.getBoundingClientRect();
+        var x = 2 * (event.clientX - rect.left) / canvas.width - 1;
+        var y = 2 * (rect.bottom - event.clientY) / canvas.height - 1;
+        t = vec2(x, y);
+
+        if (savePoints) {
+            points.push(t);
+        }
+        else {
+            points = [vec2(0.0, 0.0), t];
+        }
+        
        render();
     });
 
