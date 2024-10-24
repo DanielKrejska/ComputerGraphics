@@ -38,15 +38,21 @@ main()
     // Translate in x direction: this matrix is column-major
     // note that uTranslate is a uniform variable already defined in the 
     // Lab11ConcatTransform.js code
-    //mat4 Tx = mat4(
+    mat4 Tx = mat4(1.0, 0.0, 0.0, uTranslate,
+      0.0, 1.0, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      0.0, 0.0, 0.0, 1.0);
 
     // Matrix Sx
     // Scale in x direction, the fixed point is the y-axis: this matrix is column-major
     // note that uScale is a uniform variable already defined in the 
     // Lab11ConcatTransform.js code
-    //mat4 Sx = mat4(
+    mat4 Sx = mat4(uScale, 0.0, 0.0, 0.0,
+      0.0, 1.0, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      0.0, 0.0, 0.0, 1.0);
 
-    gl_Position = aPosition;
+    //gl_Position = aPosition;
     //gl_Position = rz * aPosition;
     //gl_Position = Tx * aPosition;
     //gl_Position = rz * Tx * aPosition;
@@ -56,7 +62,7 @@ main()
     //gl_Position = Sx * Tx * aPosition;
     //gl_Position = Sx * Tx * rz * aPosition;
     //gl_Position = Sx * rz * Tx * aPosition;
-    //gl_Position = rz * Tx * Sx * aPosition;
+    gl_Position = rz * Tx * Sx * aPosition;
 }
 </script>
 
