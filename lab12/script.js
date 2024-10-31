@@ -130,7 +130,7 @@ function render(){
     // Cube on the left
     // Scale is "first," since it's closest to the vertex, then translate
     // since it is left multiplied
-    modelViewMatrix = lookAt(eye, at , up);
+    modelViewMatrix = mult(lookAt(eye, at, up), mult(Tleft, S));
     // update modelview matrix with required transformation(s)
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -139,7 +139,7 @@ function render(){
 
     // Cube in the middle
     // just need to Scale, no translate, coord are already centered
-    modelViewMatrix = lookAt(eye, at , up);
+    modelViewMatrix = mult(lookAt(eye, at, up), S);
     // update modelview matrix with required transformation(s)
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -149,7 +149,7 @@ function render(){
     // Cube on the right
     // Scale is "first," since it's closest to the vertex, then translate
     // since it is left multiplied
-    modelViewMatrix = lookAt(eye, at , up);
+    modelViewMatrix = mult(lookAt(eye, at, up), mult(Tright, S));
     // update modelview matrix with required transformation(s)
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
