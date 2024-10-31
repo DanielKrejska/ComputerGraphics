@@ -77,22 +77,38 @@ function colorCube()
 var numPosTetra= 12;
 var posTetraArray = [];
 var colorsTetraArray = [];
-var verticesTetra = [
 
+var verticesTetra = [
+    vec4(  0.0     ,  0.0      ,  1.0     , 1.0 ),
+    vec4(  0.0     ,  0.942809 ,  0.33333 , 1.0 ),
+    vec4( -0.816497, -0.471405 ,  0.33333 , 1.0 ),
+    vec4(  0.816497, -0.471405 ,  0.33333 , 1.0 )
 ];
+
 var vertexTetraColors = [
     vec4(1.0, 0.0, 0.0, 1.0),  // red
     vec4(1.0, 1.0, 0.0, 1.0),  // yellow
     vec4(0.0, 1.0, 0.0, 1.0),  // green
     vec4(0.0, 0.0, 1.0, 1.0)   // blue
 ];
-function triangle(a, b, c, colorLoc) {
 
+function triangle(a, b, c, colorIndex) {
+    posTetraArray.push(verticesTetra[a]);
+    posTetraArray.push(verticesTetra[b]);
+    posTetraArray.push(verticesTetra[c]);
+    
+    colorsTetraArray.push(vertexTetraColors[colorIndex]);
+    colorsTetraArray.push(vertexTetraColors[colorIndex]);
+    colorsTetraArray.push(vertexTetraColors[colorIndex]);
 }
-function colorTetra()
-{
 
+function colorTetra() {
+    triangle(0, 1, 2, 0);
+    triangle(0, 1, 3, 1);
+    triangle(1, 2, 3, 2);
+    triangle(2, 0, 3, 3);
 }
+
 
 init();
 
@@ -163,12 +179,25 @@ function render(){
     gl.drawArrays(gl.TRIANGLES, 0, numPosCube);
 
     // ==== color buffer for tretrahedron ==== 
-
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer2);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(colorsTetraArray), gl.STATIC_DRAW);
+    var colorLoc = gl.getAttribLocation(program, "aColor");
+    gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(colorLoc);
     // ==== bind and send vertex info for tretrahedron to vertex shader ====
-
+    var Tx = translate(1.0,0,0);
+    var S = scale(0.75,0.75,0.75);
+    modelViewMatrix = lookAt(eye, at , up);
+    modelViewMatrix = mult(modelViewMatrix,Tx);
+    modelViewMatrix = mult(modelViewMatrix,S);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer2);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(posTetraArray), gl.STATIC_DRAW);
+    positionLoc = gl.getAttribLocation(program, "aPosition");
+    gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(positionLoc);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+    gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
     // loop thru three vertices for each face/triangle of the tetrahedron
-    /*
     for( var i=0; i<12; i+=3)
         gl.drawArrays( gl.TRIANGLES, i, 3 );
-    */
 }
