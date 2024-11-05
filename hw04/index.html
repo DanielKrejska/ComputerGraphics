@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Cube Morphing with Rotation and Colors</title>
+</head>
+<body>
+    <canvas id="gl-canvas" width="512" height="512" style="border:1px solid black">
+        Oops ... your browser doesn't support the HTML5 canvas element.
+    </canvas>
+
+    <div>
+        <button id="toggle">Toggle Morph On-Off</button>
+    </div>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+        in vec4 aPosition1;
+        in vec4 aPosition2;
+        in vec4 aColor; // Use a single color for each vertex
+        uniform float uMorph;
+        uniform mat4 uModelViewMatrix;
+        out vec4 vColor; // Output color to fragment shader
+        void main() {
+            // Interpolate between the two 3D positions
+            vec4 morphedPosition = mix(aPosition1, aPosition2, uMorph);
+            gl_Position = uModelViewMatrix * morphedPosition;
+            vColor = aColor; // Pass the vertex color directly
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+        precision mediump float;
+        in vec4 vColor; // Color from vertex shader
+        out vec4 fColor;
+        void main() {
+            fColor = vColor; // Use vertex color
+        }
+    </script>
+
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="../Common/MVnew.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
