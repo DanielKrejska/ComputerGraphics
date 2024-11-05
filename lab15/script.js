@@ -27,12 +27,12 @@ var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
 var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
 // original
-//
+/*
 var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
 var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
 var materialSpecular = vec4(1.0, 0.8, 0.0, 1.0);
 var materialShininess = 100.0;
-//
+*/
 
 // black plastic
 /*
@@ -43,12 +43,12 @@ var materialShininess = 32.0;
 */
 
 // brass
-/*
+//*
 var materialAmbient  = vec4(0.329412 , 0.223529 , 0.027451 , 1.0);
 var materialDiffuse  = vec4(0.780392 , 0.568627 , 0.113725 , 1.0);
 var materialSpecular  = vec4(0.992157 , 0.941176 , 0.807843, 1.0);
 var materialShininess = 27.8974;
-*/
+//*/
 
 // bronze
 /*
