@@ -6,9 +6,13 @@ var t = 0.0;
 var morphing = false;
 var intervalId;
 var direction = 1;
-var angleY = 0; // Rotation angle around Y axis
-var angleX = 0; // Rotation angle around X axis
-var angleZ = 0; // Rotation angle around Z axis
+var angleY = 0;
+var angleX = 0;
+var angleZ = 0;
+
+var isRotateX = false;
+var isRotateY = false;
+var isRotateZ = false;
 
 var buffer1, buffer2;
 
@@ -59,28 +63,27 @@ function init() {
 
 
     var colors1 = [
-        vec4(1.0, 0.0, 0.0, 1.0), // Red
-        vec4(0.0, 1.0, 0.0, 1.0), // Green
-        vec4(0.0, 0.0, 1.0, 1.0), // Blue
-        vec4(1.0, 1.0, 0.0, 1.0), // Yellow
-        vec4(0.0, 1.0, 1.0, 1.0), // Cyan
-        vec4(1.0, 0.0, 1.0, 1.0), // Magenta
-        vec4(0.5, 0.5, 0.5, 1.0), // Gray
-        vec4(1.0, 0.5, 0.0, 1.0)  // Orange
+        vec4(1.0, 0.0, 0.0, 1.0),
+        vec4(0.0, 1.0, 0.0, 1.0),
+        vec4(0.0, 0.0, 1.0, 1.0),
+        vec4(1.0, 1.0, 0.0, 1.0),
+        vec4(0.0, 1.0, 1.0, 1.0),
+        vec4(1.0, 0.0, 1.0, 1.0),
+        vec4(0.5, 0.5, 0.5, 1.0),
+        vec4(1.0, 0.5, 0.0, 1.0)
     ];
 
     var colors2 = [
-        vec4(0.5, 0.0, 0.0, 1.0), // Dark Red
-        vec4(0.0, 0.5, 0.0, 1.0), // Dark Green
-        vec4(0.0, 0.0, 0.5, 1.0), // Dark Blue
-        vec4(0.5, 0.5, 0.0, 1.0), // Olive
-        vec4(0.0, 0.5, 0.5, 1.0), // Teal
-        vec4(0.5, 0.0, 0.5, 1.0), // Purple
-        vec4(0.3, 0.3, 0.3, 1.0), // Dark Gray
-        vec4(0.5, 0.5, 0.0, 1.0)  // Dark Orange
+        vec4(0.5, 0.0, 0.0, 1.0),
+        vec4(0.0, 0.5, 0.0, 1.0),
+        vec4(0.0, 0.0, 0.5, 1.0),
+        vec4(0.5, 0.5, 0.0, 1.0),
+        vec4(0.0, 0.5, 0.5, 1.0),
+        vec4(0.5, 0.0, 0.5, 1.0), 
+        vec4(0.3, 0.3, 0.3, 1.0), 
+        vec4(0.5, 0.5, 0.0, 1.0)
     ];
 
-    // Create buffers for positions
     buffer1 = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer1);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(cube1), gl.STATIC_DRAW);
@@ -89,7 +92,6 @@ function init() {
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(cube2), gl.STATIC_DRAW);
 
-    // Create buffers for colors
     var colorBuffer1 = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer1);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors1), gl.STATIC_DRAW);
@@ -98,7 +100,6 @@ function init() {
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer2);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors2), gl.STATIC_DRAW);
 
-    // Set up the attribute pointers
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer1);
     var colorLoc = gl.getAttribLocation(program, "aColor");
     gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
@@ -108,6 +109,25 @@ function init() {
     gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(colorLoc);
 
+    document.getElementById('rotateXButton').style.backgroundColor = 'red';
+    document.getElementById('rotateYButton').style.backgroundColor = 'red';
+    document.getElementById('rotateZButton').style.backgroundColor = 'red';
+
+    document.getElementById('rotateXButton').addEventListener("click", function () {
+        isRotateX = !isRotateX;
+        this.style.backgroundColor = isRotateX ? 'green' : 'red';
+    });
+    
+    document.getElementById('rotateYButton').addEventListener("click", function () {
+        isRotateY = !isRotateY;
+        this.style.backgroundColor = isRotateY ? 'green' : 'red';
+    });
+    
+    document.getElementById('rotateZButton').addEventListener("click", function () {
+        isRotateZ = !isRotateZ;
+        this.style.backgroundColor = isRotateZ ? 'green' : 'red';
+    });
+    
 
     document.getElementById('toggle').addEventListener("click", function () {
         if (morphing) {
@@ -115,9 +135,9 @@ function init() {
         } else {
             intervalId = setInterval(() => {
                 t += direction * 0.015;
-                angleY += 2; // Increment rotation angle around Y
-                angleX += 1; // Increment rotation angle around X
-                angleZ += 1; // Increment rotation angle around Z
+                angleY += isRotateY ? 2 : 0; // rotation Y
+                angleX += isRotateX ? 1 : 0; // rotation X
+                angleZ += isRotateZ ? 1 : 0; // rotation Z
                 if (t >= 1.0 || t <= 0.0) {
                     direction *= -1;
                 }
@@ -133,11 +153,10 @@ function init() {
 function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // Create rotation matrices for each axis
     var modelViewMatrix = mat4();
-    modelViewMatrix = mult(modelViewMatrix, rotateY(angleY)); // Rotate around Y axis
-    modelViewMatrix = mult(modelViewMatrix, rotateX(angleX)); // Rotate around X axis
-    modelViewMatrix = mult(modelViewMatrix, rotateZ(angleZ)); // Rotate around Z axis
+    modelViewMatrix = mult(modelViewMatrix, rotateY(angleY)); // Rotate Y
+    modelViewMatrix = mult(modelViewMatrix, rotateX(angleX)); // Rotate X
+    modelViewMatrix = mult(modelViewMatrix, rotateZ(angleZ)); // Rotate Z
 
     var modelViewLoc = gl.getUniformLocation(program, "uModelViewMatrix");
     gl.uniformMatrix4fv(modelViewLoc, false, flatten(modelViewMatrix));
@@ -164,12 +183,12 @@ function render() {
 
 function drawCube() {
     const indices = [
-        1, 0, 3, 1, 3, 2, // Front face
-        2, 3, 7, 2, 7, 6, // Top face
-        3, 0, 4, 3, 4, 7, // Left face
-        6, 5, 1, 6, 1, 2, // Right face
-        4, 5, 6, 4, 6, 7, // Back face
-        5, 4, 0, 5, 0, 1  // Bottom face
+        1, 0, 3, 1, 3, 2, // Front
+        2, 3, 7, 2, 7, 6, // Top
+        3, 0, 4, 3, 4, 7, // Left
+        6, 5, 1, 6, 1, 2, // Right
+        4, 5, 6, 4, 6, 7, // Back
+        5, 4, 0, 5, 0, 1  // Bottom
     ];
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);

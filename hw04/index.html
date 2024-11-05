@@ -3,40 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Cube Morphing with Rotation and Colors</title>
+    <title>HW 04</title>
 </head>
 <body>
-    <canvas id="gl-canvas" width="512" height="512" style="border:1px solid black">
+    <canvas id="gl-canvas" width="600" height="600" style="border:1px solid black">
         Oops ... your browser doesn't support the HTML5 canvas element.
     </canvas>
 
     <div>
-        <button id="toggle">Toggle Morph On-Off</button>
+        <button id="toggle">Toggle Morph and Rotation On-Off</button>
+        <button id="rotateXButton">rotate X toggle</button>
+        <button id="rotateYButton">rotate Y toggle</button>
+        <button id="rotateZButton">rotate Z toggle</button>
     </div>
 
     <script id="vertex-shader" type="x-shader/x-vertex">
         #version 300 es
         in vec4 aPosition1;
         in vec4 aPosition2;
-        in vec4 aColor; // Use a single color for each vertex
+        in vec4 aColor;
         uniform float uMorph;
         uniform mat4 uModelViewMatrix;
-        out vec4 vColor; // Output color to fragment shader
+        out vec4 vColor;
         void main() {
-            // Interpolate between the two 3D positions
             vec4 morphedPosition = mix(aPosition1, aPosition2, uMorph);
             gl_Position = uModelViewMatrix * morphedPosition;
-            vColor = aColor; // Pass the vertex color directly
+            vColor = aColor;
         }
     </script>
 
     <script id="fragment-shader" type="x-shader/x-fragment">
         #version 300 es
         precision mediump float;
-        in vec4 vColor; // Color from vertex shader
+        in vec4 vColor;
         out vec4 fColor;
         void main() {
-            fColor = vColor; // Use vertex color
+            fColor = vColor;
         }
     </script>
 
