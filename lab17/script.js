@@ -23,13 +23,13 @@ var image2 = new Uint8Array(4*texSize*texSize);
 
 var texCoordsArray = [];
 //full texture
-/*
+
 var texCoord = [
     vec2(0, 0),
     vec2(1, 0),
     vec2(1, 1)
 ];
-*/
+
 //partial texture
 /*
 var texCoord = [
@@ -65,7 +65,7 @@ var texCoord = [
 
 var positionsArray = [];
 var colorsArray = [];
-var vertexColor = vec4(0.0, 0.0, 1.0, 1.0);
+var vertexColor = vec4(0.0, 0.0, 1.0, 1.0);  
 
 window.onload = init;
 
@@ -90,13 +90,30 @@ function init()
     gl = canvas.getContext('webgl2');
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-// isoceles triangle
-    points= [
+    points=[
     vec4( -0.95 , -0.95 , 0.0 , 1.0 ),
     vec4(  0.95 , -0.95 , 0.0 , 1.0 ),
     vec4(  0.00 ,  0.95 , 0.0 , 1.0 )
     ];
 
+// right triangle
+/*
+    points=[
+    vec4( -0.95 ,  0.95 , 0.0 , 1.0 ),
+    vec4( -0.95 , -0.95 , 0.0 , 1.0 ),
+    vec4(  0.95 , -0.95 , 0.0 , 1.0 )
+
+    ];
+*/
+// isoceles triangle
+//
+    points=[
+    vec4(  0.00 ,  0.95 , 0.0 , 1.0 ),
+    vec4( -0.95 , -0.95 , 0.0 , 1.0 ),
+    vec4(  0.95 , -0.95 , 0.0 , 1.0 )
+
+    ];
+//
     positionsArray.push(points[0]);
     colorsArray.push(vertexColor);
     positionsArray.push(points[1]);

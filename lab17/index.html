@@ -3,7 +3,7 @@
 
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>Lab 17 Texture Settings</title>
+<title>Lab 17 Texture Settings KEY</title>
 
 </HEAD>
 
@@ -18,10 +18,10 @@ Oops ... your browser doesn't support the HTML5 canvas element
 
 in vec4 aPosition;
 in vec4 aColor;
-in vec2 vTexCoord;
+in vec2 aTexCoord;
 
 out vec4 vColor;
-out vec2 vTexCoords;
+out vec2 vTexCoord;
 
 void
 main()
@@ -48,9 +48,9 @@ main()
 {
   //fColor = vColor;
   // initial, masked, underlying color will show
-  fColor = vColor*texture(uTextureMap, vTexCoord);
+  //fColor = vColor*texture(uTextureMap, vTexCoord);
   // not masked, will overwrite underlying colored triangle
-  //fColor = texture(uTextureMap, vTexCoord);
+  fColor = texture(uTextureMap, vTexCoord);
 }
 </script>
 <script type="text/javascript" src="../Common/utility.js"></script>
